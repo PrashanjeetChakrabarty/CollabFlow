@@ -8,7 +8,7 @@
 </div>
 CollabFlow is a modern, high-performance web application designed to help teams manage their workflows, track tasks, and communicate in real-time. Built entirely as a Single Page Application (SPA), it provides a seamless, app-like experience right in the browser. 
 
-I built this project to solve the common issue of fragmented team communication—merging the visual organization of a Kanban board with the immediacy of live chat, all within dedicated, secure project workspaces.
+I built this project to solve the common issue of fragmented team communication merging the visual organization of a Kanban board with the immediacy of live chat, all within dedicated, secure project workspaces.
 
 ---
 
@@ -34,7 +34,7 @@ Experience the live application here: **[CollabFlow Web App](https://collabfloww
 
 ### 3. Live Activity Feed (Chat)
 - Sub-100ms message synchronization for immediate communication.
-- **Privacy First:** The chat feed features an automated self-cleaning mechanism. Any message older than 3 days (72 hours) is permanently wiped from the database to reduce clutter and maintain operational security.
+- **Privacy First:** The chat feed features an automated self cleaning mechanism. Any message older than 3 days (72 hours) is permanently wiped from the database to reduce clutter and maintain operational security.
 
 ### 4. Global Dashboard
 - A unified view of your entire workload. The dashboard pulls in every task assigned to you across *all* active projects.
