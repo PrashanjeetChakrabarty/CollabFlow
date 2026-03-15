@@ -1,7 +1,7 @@
 # CollabFlow - Real-Time Collaborative Workspace
 
 <div align="center">
-  <img src="public/screenshots/4_tab.png" width="400" alt="Browser Tab" />
+  
   <img src="public/screenshots/3_dashboard.png" width="800" alt="Global Dashboard" />
   <img src="public/screenshots/2_projects.png" width="800" alt="Project Selector" />
   <img src="public/screenshots/1_settings.png" width="800" alt="Profile Settings" />
