@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --color-electric-violet: #8B5CF6;
+  --color-obsidian: #0f172a;
+  --color-charcoal: #1e293b;
+  --color-glass-white: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-obsidian text-slate-200 antialiased min-h-screen relative overflow-x-hidden;
+    background-image:
+      radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.1), transparent 25%);
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background-color: var(--color-glass-white);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    border-radius: 1rem;
+  }
+
+  .neon-pulse:hover {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+  }
+
+  /* Antigravity floating animation */
+  .antigravity-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+}

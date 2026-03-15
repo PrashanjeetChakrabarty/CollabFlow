@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabFlow - Interactive Evolution</title>
+    <meta name="description" content="Ultra-premium SPA UI/UX design showcase for CollabFlow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Cinematic Ambient Background -->
+    <div class="ambient-background" id="ambientBg">
+        <div class="glow-sphere violet"></div>
+        <div class="glow-sphere cyan"></div>
+        <div class="glow-sphere slate"></div>
+        <div class="particles"></div>
+    </div>
+
+    <div class="app-container" id="app">
+
+        <!-- Sidebar / Floating Command Bar -->
+        <nav class="sidebar glass-panel" id="sidebar">
+            <div>
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <span class="logo-text">Collab<span>Flow</span></span>
+                </div>
+                <ul class="nav-links">
+                    <li class="active" data-view="boardView">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span class="link-text">Dashboard</span>
+                    </li>
+                    <li data-view="projectsView">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                        <span class="link-text">Projects</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-bottom">
+                <div class="settings-btn" data-view="settingsView">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                    <span class="link-text">Settings</span>
+                </div>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <!-- VIEWS CONTAINER -->
+        <div class="views-wrapper" id="viewsContainer">
+
+            <!-- VIEW 1: KANBAN BOARD -->
+            <main class="view active-view kanban-board" id="boardView">
+                <header class="board-header">
+                    <div class="header-info">
+                        <h1>CollabFlow: Global Command</h1>
+                        <p>Sync Engine v1.0 &bull; Glassmorphism Toolkit</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="live-presence-indicator">
+                            <div class="avatars-group">
+                                <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah"
+                                        alt="Sarah" /></div>
+                                <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=David"
+                                        alt="David" /></div>
+                                <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Dev"
+                                        alt="Dev" /></div>
+                            </div>
+                            <div class="presence-status">
+                                <span class="pulse-ring"></span>
+                                <span class="presence-text" id="livePresenceText">Live (<span
+                                        id="liveCount">0</span>)</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="columns-container" id="kanbanContainer">
+                    <!-- Column: Backlog -->
+                    <div class="kanban-column glass-panel">
+                        <div class="column-header">
+                            <h2>Backlog <span class="count">2</span></h2>
+                            <span class="more-opts">...</span>
+                        </div>
+
+                        <div class="cards-list" id="col-backlog">
+                            <div class="card glass-card neon-violet interactive-card" draggable="true" data-id="1">
+                                <h3>Design System Update</h3>
+                                <p>Implement the new 'Electric Violet' accents across all fundamental components in the
+                                    toolkit.</p>
+                                <div class="card-footer">
+                                    <span class="tag violet-tag">UI/UX</span>
+                                    <div class="avatar-sm"><img
+                                            src="https://api.dicebear.com/7.x/notionists/svg?seed=Dev" alt="Dev" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card glass-card neon-slate interactive-card" draggable="true" data-id="2">
+                                <h3>Motion Guidelines</h3>
+                                <p>Document the spring physics used for floating elements and background particle
+                                    dynamics.</p>
+                                <div class="card-footer">
+                                    <span class="tag slate-tag">Design</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inline Input Footer -->
+                        <div class="add-card-container">
+                            <input type="text" class="card-input glass-input" placeholder="+ Add to task..."
+                                data-col="col-backlog">
+                        </div>
+                    </div>
+
+                    <!-- Column: To Do -->
+                    <div class="kanban-column glass-panel">
+                        <div class="column-header">
+                            <h2>To Do <span class="count">1</span></h2>
+                            <span class="more-opts">...</span>
+                        </div>
+
+                        <div class="cards-list" id="col-todo">
+                            <div class="card glass-card neon-cyan floating interactive-card" draggable="true"
+                                data-id="3">
+                                <h3>Quantum Sync Engine</h3>
+                                <p>Refactor data synchronization module to handle real-time WebRTC connections smoothly.
+                                </p>
+                                <div class="card-footer">
+                                    <span class="tag cyan-tag">Backend</span>
+                                    <div class="avatar-sm"><img
+                                            src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-card-container">
+                            <input type="text" class="card-input glass-input" placeholder="+ Add to task..."
+                                data-col="col-todo">
+                        </div>
+                    </div>
+
+                    <!-- Column: In Progress -->
+                    <div class="kanban-column glass-panel active-column">
+                        <div class="column-header">
+                            <h2>In Progress <span class="count">1</span></h2>
+                            <span class="more-opts">...</span>
+                        </div>
+
+                        <div class="cards-list" id="col-inprogress">
+                            <div class="card glass-card neon-violet interactive-card" draggable="true" data-id="4">
+                                <h3>Activity Feed Integration</h3>
+                                <p>Connect WebSockets for real-time live presence updates and interactions.</p>
+                                <div class="card-footer">
+                                    <span class="tag violet-tag">Fullstack</span>
+                                    <div class="avatar-sm"><img
+                                            src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah" />
+                                    </div>
+                                </div>
+                                <div class="glow-trail"></div>
+                            </div>
+                        </div>
+                        <div class="add-card-container">
+                            <input type="text" class="card-input glass-input" placeholder="+ Add to task..."
+                                data-col="col-inprogress">
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- VIEW 2: PROJECTS GALLERY -->
+            <section class="view projects-view" id="projectsView">
+                <header class="board-header">
+                    <div class="header-info">
+                        <h1>Active Projects</h1>
+                        <p>Your team's collaborative command center</p>
+                    </div>
+                    <button class="primary-btn btn-interactive" id="newProjectBtn">+ New Project</button>
+                </header>
+
+                <div class="projects-grid" id="projectsGrid">
+                    <div class="project-card glass-panel interactive-card neon-violet floating-delay-1">
+                        <div class="project-icon bg-violet"></div>
+                        <h3>Orbit UI</h3>
+                        <p>Web app UI toolkit redesign</p>
+                        <div class="project-stats">
+                            <span>8 Active</span>
+                            <span>92% Complete</span>
+                        </div>
+                        <div class="avatars-group mini-avatars">
+                            <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah"
+                                    alt="Sarah" /></div>
+                            <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=David"
+                                    alt="David" /></div>
+                        </div>
+                    </div>
+
+                    <div class="project-card glass-panel interactive-card neon-cyan floating-delay-2">
+                        <div class="project-icon bg-cyan"></div>
+                        <h3>Neon Analytics</h3>
+                        <p>Data visualization dashboard</p>
+                        <div class="project-stats">
+                            <span>12 Active</span>
+                            <span>45% Complete</span>
+                        </div>
+                        <div class="avatars-group mini-avatars">
+                            <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Dev"
+                                    alt="Dev" /></div>
+                        </div>
+                    </div>
+
+                    <div class="project-card glass-panel interactive-card neon-slate floating-delay-3">
+                        <div class="project-icon bg-slate"></div>
+                        <h3>Gravity Core Backend</h3>
+                        <p>Go-based low latency microservices</p>
+                        <div class="project-stats">
+                            <span>3 Active</span>
+                            <span>10% Complete</span>
+                        </div>
+                        <div class="avatars-group mini-avatars">
+                            <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah"
+                                    alt="Sarah" /></div>
+                            <div class="avatar"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Dev"
+                                    alt="Dev" /></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 3: SETTINGS -->
+            <section class="view settings-view" id="settingsView">
+                <header class="board-header">
+                    <div class="header-info">
+                        <h1>Environment Settings</h1>
+                        <p>Configure your antigravity workspace preferences</p>
+                    </div>
+                </header>
+
+                <div class="settings-grid">
+                    <div class="settings-panel glass-panel">
+                        <h2>Profile Management</h2>
+                        <div class="profile-edit">
+                            <div class="avatar-lg"><img
+                                    src="https://api.dicebear.com/7.x/notionists/svg?seed=Prashanjeet"
+                                    alt="Prashanjeet" /></div>
+                            <div class="profile-details">
+                                <label>Display Name</label>
+                                <input type="text" class="glass-input" value="Prashanjeet Chakrabarty">
+                                <label>Role</label>
+                                <input type="text" class="glass-input" value="Lead Architect">
+                                <button class="primary-btn btn-interactive mt-3">Upload Avatar</button>
+                                <button class="secondary-btn btn-interactive mt-3">Save Profile</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-panel glass-panel">
+                        <h2>Aesthetic Controls</h2>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Accent Glow Brightness</h3>
+                                <p>Adjust the brightness of neon accents</p>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="glowSlider" class="glass-slider neon-slider" min="0" max="100"
+                                    value="80">
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Glassmorphism Blur Intensity</h3>
+                                <p>Control the heaviness of backdrop filtering</p>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="blurSlider" class="glass-slider neon-slider" min="0" max="50"
+                                    value="28">
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Motion Blur UI</h3>
+                                <p>Enable cinematic animations and physics blurs</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked id="motionBlurToggle">
+                                <span class="toggle-slider round"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Theme Selector</h3>
+                                <p>Choose your workspace aesthetic</p>
+                            </div>
+                            <select class="glass-select" id="themeSelect">
+                                <option value="antigravity" selected>Antigravity Future (Dark)</option>
+                                <option value="cyberpunk">Cyberpunk Neon</option>
+                                <option value="minimal">Minimal Slate</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div> <!-- End Views Container -->
+
+        <!-- Right: Activity Feed Sidebar -->
+        <aside class="activity-feed glass-panel" id="activityFeed">
+            <div class="feed-header">
+                <h3>Activity Feed</h3>
+                <span class="feed-opts">...</span>
+            </div>
+
+            <div class="feed-items" id="feedList">
+                <div class="feed-item">
+                    <div class="avatar-xs"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=David"
+                            alt="David" /></div>
+                    <div class="feed-content">
+                        <p><strong>David</strong> moved <strong>Cinematic Animations</strong> to <span
+                                class="highlight-slate">Review</span></p>
+                        <span class="time">5 min ago</span>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="avatar-xs"><img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah"
+                            alt="Sarah" /></div>
+                    <div class="feed-content">
+                        <p><strong>Sarah</strong> left a comment on <strong>Quantum Sync Engine</strong>: "Looks solid!"
+                        </p>
+                        <span class="time">12 min ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Chat Input -->
+            <div class="chat-container mt-auto">
+                <div class="chat-input-wrapper">
+                    <input type="text" placeholder="Send a message..." id="chatInput" class="glass-input">
+                    <button class="send-btn btn-interactive" id="sendBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--electric-violet)" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Slide-out Task Detail Drawer -->
+        <aside class="task-drawer glass-panel" id="taskDrawer">
+            <div class="drawer-header">
+                <div>
+                    <span class="tag violet-tag" id="drawerTag">UI/UX</span>
+                    <span class="status-badge" id="drawerStatus">In Progress</span>
+                </div>
+                <button class="close-drawer btn-interactive" id="closeDrawer">×</button>
+            </div>
+            <div class="drawer-content">
+                <h2 id="drawerTitle">Task Detail</h2>
+                <div class="drawer-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Assignee</span>
+                        <div class="avatar-sm" id="drawerAssignee"><img
+                                src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah" /></div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Due Date</span>
+                        <span class="meta-value">Mar 24, 2026</span>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Description</h3>
+                <p class="drawer-desc" id="drawerDesc">Task description goes here.</p>
+
+                <h3 class="section-title">Task Checklist</h3>
+                <ul class="task-checklist">
+                    <li><label><input type="checkbox" checked> Initial stage completion</label></li>
+                    <li><label><input type="checkbox"> Quality assurance</label></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Floating Chat Button -->
+        <button class="floating-chat-btn btn-interactive glass-panel" id="chatToggleBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </button>
+
+        <!-- Glassmodal: New Project Overlay -->
+        <div class="modal-overlay" id="newProjectModal">
+            <div class="glass-modal glass-panel">
+                <h2>Create New Project</h2>
+                <p>Initialize a new workspace tile.</p>
+                <div class="modal-body">
+                    <label>Project Name</label>
+                    <input type="text" id="newProjName" class="glass-input" placeholder="e.g. Nexus Core">
+                    <label>Description</label>
+                    <input type="text" id="newProjDesc" class="glass-input" placeholder="Short description...">
+                    <label>Primary Theme Color</label>
+                    <select id="newProjColor" class="glass-select">
+                        <option value="violet">Electric Violet</option>
+                        <option value="cyan">Cyber Cyan</option>
+                        <option value="slate">Deep Slate</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button class="secondary-btn btn-interactive" id="cancelProjBtn">Cancel</button>
+                    <button class="primary-btn btn-interactive" id="createProjBtn">Initialize</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Elegant Footer -->
+    <footer class="app-footer">
+        <p>Develop by PrashanjeetChakrabarty</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
