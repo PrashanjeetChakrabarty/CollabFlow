@@ -141,12 +141,12 @@ export default function WorkspaceContainer() {
 
     return (
         <div className="flex-1 relative w-full h-full flex flex-col">
-            {/* Contextual Workspace Header Controls (Absolute positioned top-right for Kanban) */}
-            <div className="absolute top-4 right-4 md:top-8 md:right-8 z-10 hidden sm:flex">
+            {/* Contextual Workspace Header Controls */}
+            <div className="w-full flex justify-center pt-4 pb-2 z-10 hidden sm:flex border-b border-white/5 bg-obsidian/50 backdrop-blur-md">
                 {activeProject?.ownerId === currentUser?.uid && (
                     <button
                         onClick={() => setIsInviteModalOpen(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-charcoal hover:bg-white/10 border border-white/10 transition-colors text-slate-300 hover:text-white font-medium rounded-xl"
+                        className="flex items-center gap-2 px-6 py-2 bg-charcoal hover:bg-white/10 border border-white/10 transition-colors text-slate-300 hover:text-white font-medium rounded-xl shadow-lg"
                     >
                         <Users className="w-4 h-4" />
                         <span>Invite Teammate</span>
