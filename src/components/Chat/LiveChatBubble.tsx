@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { rtdb } from '../../lib/firebase';
-import { ref, push, onChildAdded, serverTimestamp, query, limitToLast, get, remove, orderByChild, endAt } from 'firebase/database';
+import { ref, push, onChildAdded, serverTimestamp, query, limitToLast } from 'firebase/database';
 
 interface ChatMessage {
     id: string;
@@ -42,36 +42,6 @@ export default function LiveChatBubble() {
                 });
             }
         });
-
-        // Auto-delete messages older than 3 days
-        const cleanupOldMessages = async () => {
-            try {
-                const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
-                const oldMessagesQuery = query(
-                    ref(rtdb, chatPath),
-                    orderByChild('timestamp'),
-                    endAt(threeDaysAgo)
-                );
-
-                const snapshot = await get(oldMessagesQuery);
-                if (snapshot.exists()) {
-                    const updates: Promise<void>[] = [];
-                    snapshot.forEach((childSnapshot) => {
-                        updates.push(remove(ref(rtdb, `${chatPath}/${childSnapshot.key}`)));
-                    });
-
-                    if (updates.length > 0) {
-                        await Promise.all(updates);
-                        console.log(`Auto-deleted ${updates.length} old chat messages.`);
-                    }
-                }
-            } catch (err) {
-                console.error("Failed to cleanup old messages:", err);
-            }
-        };
-
-        // Run cleanup once on mount/project change
-        cleanupOldMessages();
 
         return () => unsubscribe();
     }, [chatPath]);
