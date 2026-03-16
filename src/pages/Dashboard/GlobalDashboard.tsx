@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../lib/firebase';
-import { collection, onSnapshot, query, where, orderBy, addDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, onSnapshot, query, where, orderBy, addDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import type { FirestoreError, QueryDocumentSnapshot } from 'firebase/firestore';
 import type { KanbanTask, Project } from '../../types';
 import { useAppStore } from '../../store/useAppStore';
@@ -95,6 +95,16 @@ export default function GlobalDashboard() {
         }
     };
 
+    const handleCompleteTask = async (taskId: string) => {
+        try {
+            await updateDoc(doc(db, 'tasks', taskId), {
+                status: 'Done'
+            });
+        } catch (err) {
+            console.error("Error completing task:", err);
+        }
+    };
+
     const getStatusIcon = (status: KanbanTask['status']) => {
         switch (status) {
             case 'Backlog': return <AlertCircle className="w-5 h-5 text-slate-400" />;
@@ -184,11 +194,20 @@ export default function GlobalDashboard() {
                             >
                                 <div className="flex items-start justify-between mb-3">
                                     <h3 className="font-semibold text-white text-lg group-hover:text-electric-violet transition-colors line-clamp-1">{task.title}</h3>
-                                    <div className="shrink-0 ml-3 flex items-center gap-2">
+                                    <div className="shrink-0 ml-3 flex items-center gap-1">
                                         {getStatusIcon(task.status)}
+                                        {task.status !== 'Done' && (
+                                            <button
+                                                onClick={() => handleCompleteTask(task.id)}
+                                                className="p-1.5 ml-1 rounded-md text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                                                title="Mark as Complete"
+                                            >
+                                                <CheckCircle2 className="w-4 h-4" />
+                                            </button>
+                                        )}
                                         <button
                                             onClick={() => handleDeleteTask(task.id)}
-                                            className="p-1 rounded-md text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                            className="p-1.5 rounded-md text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                                             title="Delete Task"
                                         >
                                             <Trash2 className="w-4 h-4" />
