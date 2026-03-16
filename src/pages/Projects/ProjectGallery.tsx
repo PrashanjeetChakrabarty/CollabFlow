@@ -40,10 +40,14 @@ export default function ProjectGallery() {
         const unsubscribeMembers = onSnapshot(memberProjectsQuery, (snapshot) => {
             const fbProjects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Project));
             setProjects(fbProjects);
+        }, (error) => {
+            console.error("FIREBASE INDEX REQUIRED FOR PROJECTS:", error.message);
         });
         const unsubscribePending = onSnapshot(pendingProjectsQuery, (snapshot) => {
             const fbProjects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Project));
             setPendingProjects(fbProjects);
+        }, (error) => {
+            console.error("FIREBASE INDEX REQUIRED FOR PENDING INVITES:", error.message);
         });
 
         return () => {
@@ -54,7 +58,20 @@ export default function ProjectGallery() {
 
     const handleCreateProject = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newTitle.trim() || !normalizedUserEmail || !currentUser) return;
+        if (!newTitle.trim()) {
+            setCreateError('Project Name is required.');
+            return;
+        }
+        if (!currentUser) {
+            setCreateError('You must be logged in to create a project.');
+            return;
+        }
+        if (!normalizedUserEmail) {
+            console.error("Missing email for user:", currentUser);
+            setCreateError('Your account is missing an email address, which is required for collaboration.');
+            return;
+        }
+
 
         try {
             // Generate a random 6-character alphanumeric code
@@ -94,7 +111,14 @@ export default function ProjectGallery() {
 
     const handleJoinProject = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!joinCode.trim() || !normalizedUserEmail) return;
+        if (!joinCode.trim()) {
+            setJoinError('Please enter an invite code.');
+            return;
+        }
+        if (!normalizedUserEmail) {
+            setJoinError('Your account is missing an email address, which is required to join workspaces.');
+            return;
+        }
         setJoinError('');
 
         try {

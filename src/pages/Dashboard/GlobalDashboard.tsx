@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../lib/firebase';
-import { collection, onSnapshot, query, where, orderBy, addDoc } from 'firebase/firestore';
+import { collection, onSnapshot, query, where, orderBy, addDoc, doc, deleteDoc } from 'firebase/firestore';
 import type { FirestoreError, QueryDocumentSnapshot } from 'firebase/firestore';
 import type { KanbanTask, Project } from '../../types';
 import { useAppStore } from '../../store/useAppStore';
-import { LayoutDashboard, Clock, CheckCircle2, AlertCircle, Plus, X } from 'lucide-react';
+import { LayoutDashboard, Clock, CheckCircle2, AlertCircle, Plus, X, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GlobalDashboard() {
@@ -17,6 +17,7 @@ export default function GlobalDashboard() {
     const [isAddingTask, setIsAddingTask] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [selectedProjectId, setSelectedProjectId] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState<KanbanTask['status']>('To-Do');
 
     const mapTask = (docSnap: QueryDocumentSnapshot) => ({ id: docSnap.id, ...docSnap.data() } as KanbanTask);
     const mapProject = (docSnap: QueryDocumentSnapshot) => ({ id: docSnap.id, ...docSnap.data() } as Project);
@@ -72,7 +73,7 @@ export default function GlobalDashboard() {
             await addDoc(collection(db, 'tasks'), {
                 title: newTaskTitle,
                 description: '',
-                status: 'Backlog', // Default status
+                status: selectedStatus,
                 projectId: selectedProjectId,
                 userId: currentUser.uid,
                 createdAt: Date.now(),
@@ -81,6 +82,16 @@ export default function GlobalDashboard() {
             setIsAddingTask(false);
         } catch (error) {
             console.error("Error creating quick task:", error);
+        }
+    };
+
+    const handleDeleteTask = async (taskId: string) => {
+        if (confirm("Are you sure you want to delete this task?")) {
+            try {
+                await deleteDoc(doc(db, 'tasks', taskId));
+            } catch (err) {
+                console.error("Error deleting task:", err);
+            }
         }
     };
 
@@ -173,8 +184,15 @@ export default function GlobalDashboard() {
                             >
                                 <div className="flex items-start justify-between mb-3">
                                     <h3 className="font-semibold text-white text-lg group-hover:text-electric-violet transition-colors line-clamp-1">{task.title}</h3>
-                                    <div className="shrink-0 ml-3">
+                                    <div className="shrink-0 ml-3 flex items-center gap-2">
                                         {getStatusIcon(task.status)}
+                                        <button
+                                            onClick={() => handleDeleteTask(task.id)}
+                                            className="p-1 rounded-md text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                            title="Delete Task"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
                                     </div>
                                 </div>
                                 <p className="text-sm text-slate-400 line-clamp-2 mb-4 flex-1">
@@ -241,6 +259,22 @@ export default function GlobalDashboard() {
                                                     {proj.title}
                                                 </option>
                                             ))}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-300 mb-1">Destination Column</label>
+                                        <select
+                                            value={selectedStatus}
+                                            onChange={(e) => setSelectedStatus(e.target.value as KanbanTask['status'])}
+                                            required
+                                            className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-electric-violet/50 transition-all appearance-none"
+                                        >
+                                            <option value="Backlog" className="bg-charcoal text-white">Backlog</option>
+                                            <option value="To-Do" className="bg-charcoal text-white">To-Do</option>
+                                            <option value="In-Progress" className="bg-charcoal text-white">In-Progress</option>
+                                            <option value="Review" className="bg-charcoal text-white">Review</option>
+                                            <option value="Done" className="bg-charcoal text-white">Done</option>
                                         </select>
                                     </div>
 
